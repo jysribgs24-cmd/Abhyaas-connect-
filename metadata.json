@@ -1,0 +1,6 @@
+{
+  "name": "Abhyaas Connect",
+  "description": "Abhyaas Connect — School portal for Abhyaas International School featuring class broadcasts, AI MCQ tests, doubt clearing, question scanning, and educational games.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

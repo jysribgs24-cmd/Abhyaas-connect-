@@ -1,0 +1,128 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile for admin or student",
+      "type": "object",
+      "properties": {
+        "role": { "type": "string", "enum": ["admin", "student"] },
+        "name": { "type": "string", "maxLength": 100 },
+        "username": { "type": "string", "maxLength": 50 },
+        "className": { "type": "string", "maxLength": 20 },
+        "section": { "type": "string", "maxLength": 10 },
+        "rollNo": { "type": "string", "maxLength": 20 },
+        "internalEmail": { "type": "string", "maxLength": 100 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["role", "name", "username"]
+    },
+    "Class": {
+      "title": "Class",
+      "description": "School class and section group",
+      "type": "object",
+      "properties": {
+        "className": { "type": "string", "maxLength": 20 },
+        "section": { "type": "string", "maxLength": 10 },
+        "groupName": { "type": "string", "maxLength": 100 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["className", "section", "groupName"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "Text broadcast message to a class or school-wide",
+      "type": "object",
+      "properties": {
+        "classId": { "type": "string", "maxLength": 50 },
+        "senderId": { "type": "string", "maxLength": 128 },
+        "senderName": { "type": "string", "maxLength": 100 },
+        "text": { "type": "string", "maxLength": 2000 },
+        "timestamp": { "type": "string" },
+        "edited": { "type": "boolean" },
+        "forwarded": { "type": "boolean" }
+      },
+      "required": ["classId", "senderId", "senderName", "text"]
+    },
+    "TestResult": {
+      "title": "TestResult",
+      "description": "AI MCQ test score and breakdown",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string", "maxLength": 128 },
+        "studentName": { "type": "string", "maxLength": 100 },
+        "lesson": { "type": "string", "maxLength": 100 },
+        "subject": { "type": "string", "maxLength": 100 },
+        "difficulty": { "type": "string", "enum": ["EASY", "MEDIUM", "HARD"] },
+        "numberOfQs": { "type": "number" },
+        "score": { "type": "number" },
+        "wrongCount": { "type": "number" },
+        "date": { "type": "string" }
+      },
+      "required": ["studentId", "subject", "lesson", "score"]
+    },
+    "AIChatMessage": {
+      "title": "AIChatMessage",
+      "description": "Conversation message in student AI doubt solver",
+      "type": "object",
+      "properties": {
+        "role": { "type": "string", "enum": ["user", "model"] },
+        "text": { "type": "string", "maxLength": 5000 },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["role", "text"]
+    },
+    "Subject": {
+      "title": "Subject",
+      "description": "Subject with syllabus lessons across classes",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "maxLength": 100 },
+        "lessons": { "type": "array" }
+      },
+      "required": ["name"]
+    },
+    "GameScore": {
+      "title": "GameScore",
+      "description": "Educational games best scores per student",
+      "type": "object",
+      "properties": {
+        "ms": { "type": "number" },
+        "ws": { "type": "number" },
+        "sn": { "type": "number" },
+        "ttt": { "type": "array" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": []
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "User profiles with role, class, rollNo"
+    },
+    "/classes/{classId}": {
+      "schema": { "$ref": "#/entities/Class" },
+      "description": "Classes and sections"
+    },
+    "/messages/{msgId}": {
+      "schema": { "$ref": "#/entities/Message" },
+      "description": "Broadcast messages for classes or all"
+    },
+    "/test_results/{id}": {
+      "schema": { "$ref": "#/entities/TestResult" },
+      "description": "MCQ results for students"
+    },
+    "/ai_chats/{studentId}/messages/{msgId}": {
+      "schema": { "$ref": "#/entities/AIChatMessage" },
+      "description": "AI doubt chat messages per student"
+    },
+    "/subjects/{subjectId}": {
+      "schema": { "$ref": "#/entities/Subject" },
+      "description": "Subjects and syllabus lesson lists"
+    },
+    "/gameScores/{userId}": {
+      "schema": { "$ref": "#/entities/GameScore" },
+      "description": "Game high scores per user"
+    }
+  }
+}
